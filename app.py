@@ -2,12 +2,21 @@ import streamlit as st
 import pickle
 import pandas as pd
 import os
+import joblib
 
-# Load model and transformer safely
+# -----------------------------
+# Load Model & Transformer
+# -----------------------------
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model = joblib.load(os.path.join(BASE_DIR, "model_crop_compressed.pkl"))
 
-model = pickle.load(open(os.path.join(BASE_DIR, "model_crop.pkl"), "rb"))
-transformer = pickle.load(open(os.path.join(BASE_DIR, "transformer_crop.pkl"), "rb"))
+transformer = joblib.load(os.path.join(BASE_DIR, "transformer_crop.pkl"))
+
+
+# -----------------------------
+# Streamlit UI
+# -----------------------------
 
 st.set_page_config(page_title="Crop Yield Prediction")
 
@@ -57,4 +66,3 @@ if st.button("Predict Yield"):
     prediction = model.predict(transformed)
 
     st.success(f"🌱 Predicted Yield: {prediction[0]:.2f} hg/ha")
-
